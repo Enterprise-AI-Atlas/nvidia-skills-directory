@@ -1,5 +1,9 @@
 # NVIDIA Skills Directory
 
+[![CI](https://github.com/awdemos/nvidia-skills-directory/actions/workflows/ci.yml/badge.svg)](https://github.com/awdemos/nvidia-skills-directory/actions/workflows/ci.yml)
+[![Skills](https://img.shields.io/badge/skills-201-blue)](DIRECTORY.md)
+[![License](https://img.shields.io/badge/license-Apache--2.0%20%7C%20CC--BY--4.0-green)](DIRECTORY.md)
+
 A complete, agentic-reader-optimized directory of the official NVIDIA skills published at [`NVIDIA/skills`](https://github.com/NVIDIA/skills).
 
 ## What's here
@@ -19,6 +23,15 @@ Data was extracted from:
 - Commit: [`366564ddf68ad55b3c12a2faee3d2fd3d3de3b36`](https://github.com/NVIDIA/skills/tree/366564ddf68ad55b3c12a2faee3d2fd3d3de3b36)
 - Total skills cataloged: **201**
 - MCP servers found: **0** (none in the upstream repo; none in this workspace)
+
+## Use as an OpenCode skill
+
+```bash
+mkdir -p ~/.config/opencode/skills
+ln -s "$(pwd)/opencode-skill" ~/.config/opencode/skills/nvidia-skills-directory
+```
+
+This makes the directory discoverable to OpenCode agents in any workspace.
 
 ## Regenerate the directory
 
