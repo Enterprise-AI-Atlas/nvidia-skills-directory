@@ -99,7 +99,7 @@ class _FrontmatterMetadata(BaseModel):
     model_config: ClassVar[ConfigDict] = ConfigDict(frozen=True)
 
     author: str = ""
-    tags: list[str] | str = []
+    tags: list[str] | str | None = None
 
 
 class _SkillFrontmatter(BaseModel):
@@ -220,9 +220,9 @@ def _extract_skills(repo_dir: Path, commit: str) -> list[Skill]:
 
         version = frontmatter.version
         author = frontmatter.author or frontmatter.metadata.author
-        tags: list[str] | str | None = frontmatter.metadata.tags or frontmatter.tags
-        if tags is None:
-            tags = []
+        tags: list[str] | str | None = (
+            frontmatter.metadata.tags if frontmatter.metadata.tags is not None else []
+        )
 
         primary_category = category_map.get(slug, "")
         product = product_map.get(slug, "")
