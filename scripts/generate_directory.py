@@ -86,12 +86,12 @@ def _md_table_row(cells: list[str]) -> str:
     return "| " + " | ".join(cell.replace("|", "\\|") for cell in cells) + " |"
 
 
-def _render_frontmatter(repo: str, generated_at: str) -> str:
+def _render_frontmatter(repo: str, total_skills: int, generated_at: str) -> str:
     """Render the YAML frontmatter block."""
     return f"""---
 repo: {repo}
 source_commit: {SOURCE_COMMIT}
-total_skills: 201
+total_skills: {total_skills}
 total_local_mcp_servers: 0
 total_repo_mcp_servers: 0
 generated_at: "{generated_at}"
@@ -267,7 +267,7 @@ def generate_directory(catalog_path: Path, output_path: Path) -> None:
     generated_at = _now_iso8601()
 
     parts = [
-        _render_frontmatter(catalog.repo, generated_at),
+        _render_frontmatter(catalog.repo, catalog.total, generated_at),
         "# NVIDIA Skills & MCP Server Directory\n",
         _render_agent_navigation(),
         _render_index_table("Category Index", categories),

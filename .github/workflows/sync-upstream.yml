@@ -1,0 +1,70 @@
+name: Sync upstream NVIDIA/skills
+
+on:
+  schedule:
+    - cron: "0 0 * * 0"
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+        with:
+          version: "0.11.7"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+
+      - name: Install dependencies
+        run: uv sync --all-groups
+
+      - name: Extract upstream catalog
+        id: extract
+        run: |
+          uv run scripts/extract_catalog.py
+          echo "commit=$(jq -r .commit nvidia_skills_catalog.json)" >> "$GITHUB_OUTPUT"
+          echo "total=$(jq -r .total nvidia_skills_catalog.json)" >> "$GITHUB_OUTPUT"
+
+      - name: Update pinned constants
+        run: |
+          uv run scripts/update_pin.py \
+            "$(jq -r .commit nvidia_skills_catalog.json)" \
+            "$(jq -r .total nvidia_skills_catalog.json)"
+
+      - name: Regenerate directory
+        run: uv run scripts/generate_directory.py
+
+      - name: Lint
+        run: uv run ruff check scripts tests
+
+      - name: Format check
+        run: uv run ruff format --check scripts tests
+
+      - name: Type check
+        run: uv run basedpyright
+
+      - name: Test
+        run: uv run pytest tests/test_directory.py tests/test_extract_catalog.py -v
+
+      - name: Create pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: sync/upstream-skills
+          commit-message: "sync: update from NVIDIA/skills@${{ steps.extract.outputs.commit }}"
+          title: "sync: update from NVIDIA/skills@${{ steps.extract.outputs.commit }}"
+          body: |
+            This PR syncs the local skills catalog with upstream NVIDIA/skills.
+
+            - Upstream commit: ${{ steps.extract.outputs.commit }}
+            - Total skills: ${{ steps.extract.outputs.total }}
