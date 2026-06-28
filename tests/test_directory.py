@@ -13,8 +13,8 @@ from scripts.generate_directory import Catalog, load_catalog
 
 REPO_ROOT: Final[Path] = Path(__file__).resolve().parent.parent
 DIRECTORY_PATH: Final[Path] = REPO_ROOT / "DIRECTORY.md"
-SOURCE_COMMIT: Final[str] = "366564ddf68ad55b3c12a2faee3d2fd3d3de3b36"
-EXPECTED_TOTAL_SKILLS: Final[int] = 201
+SOURCE_COMMIT: Final[str] = "e537b31f9406831a60b28eff393731e84df60168"
+EXPECTED_TOTAL_SKILLS: Final[int] = 225
 
 REQUIRED_SECTIONS: Final[frozenset[str]] = frozenset(
     {
