@@ -21,7 +21,7 @@ from pydantic import BaseModel, ConfigDict, field_validator
 REPO_ROOT: Final[Path] = Path(__file__).resolve().parent.parent
 CATALOG_PATH: Final[Path] = REPO_ROOT / "nvidia_skills_catalog.json"
 DIRECTORY_PATH: Final[Path] = REPO_ROOT / "DIRECTORY.md"
-SOURCE_COMMIT: Final[str] = "366564ddf68ad55b3c12a2faee3d2fd3d3de3b36"
+SOURCE_COMMIT: Final[str] = "a9ea6f987f3a2e5efbd6f94ad394dc0b64265719"
 
 
 class Skill(BaseModel):
